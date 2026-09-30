@@ -12,6 +12,10 @@ const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const usuarios_module_1 = require("./usuarios/usuarios.module");
+const medicos_module_1 = require("./medicos/medicos.module");
+const reservas_module_1 = require("./reservas/reservas.module");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -32,6 +36,10 @@ exports.AppModule = AppModule = __decorate([
                     synchronize: true,
                 }),
             }),
+            usuarios_module_1.UsuariosModule,
+            medicos_module_1.MedicosModule,
+            reservas_module_1.ReservasModule,
+            auth_module_1.AuthModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

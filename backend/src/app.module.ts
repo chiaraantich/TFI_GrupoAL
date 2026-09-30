@@ -3,6 +3,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import { MedicosModule } from './medicos/medicos.module';
+import { ReservasModule } from './reservas/reservas.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +24,10 @@ import { AppService } from './app.service';
         synchronize: true, // solo desarrollo: crea las tablas desde las entidades
       }),
     }),
+    UsuariosModule,
+    MedicosModule,
+    ReservasModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
