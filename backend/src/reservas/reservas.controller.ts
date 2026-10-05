@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Patch,
+  Post,
   Query,
   Req,
   UseGuards,
@@ -15,6 +16,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolUsuario } from '../common/enums';
 import { ActualizarEstadoReservaDto } from './dto/actualizar-estado-reserva.dto';
+import { CrearReservaDto } from './dto/crear-reserva.dto';
 
 @ApiTags('reservas')
 @ApiBearerAuth()
@@ -37,5 +39,11 @@ export class ReservasController {
     @Body() dto: ActualizarEstadoReservaDto,
   ) {
     return this.reservasService.marcarEstado(req.user.id, Number(id), dto);
+  }
+
+  @Roles(RolUsuario.PACIENTE, RolUsuario.ADMINISTRADOR)
+  @Post()
+  crearReserva(@Req() req: any, @Body() dto: CrearReservaDto) {
+    return this.reservasService.crearReserva(req.user.id, req.user.rol, dto);
   }
 }

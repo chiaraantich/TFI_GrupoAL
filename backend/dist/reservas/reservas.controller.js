@@ -21,6 +21,7 @@ const roles_guard_1 = require("../auth/roles.guard");
 const roles_decorator_1 = require("../auth/roles.decorator");
 const enums_1 = require("../common/enums");
 const actualizar_estado_reserva_dto_1 = require("./dto/actualizar-estado-reserva.dto");
+const crear_reserva_dto_1 = require("./dto/crear-reserva.dto");
 let ReservasController = class ReservasController {
     reservasService;
     constructor(reservasService) {
@@ -31,6 +32,9 @@ let ReservasController = class ReservasController {
     }
     marcarEstado(req, id, dto) {
         return this.reservasService.marcarEstado(req.user.id, Number(id), dto);
+    }
+    crearReserva(req, dto) {
+        return this.reservasService.crearReserva(req.user.id, req.user.rol, dto);
     }
 };
 exports.ReservasController = ReservasController;
@@ -53,6 +57,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, actualizar_estado_reserva_dto_1.ActualizarEstadoReservaDto]),
     __metadata("design:returntype", void 0)
 ], ReservasController.prototype, "marcarEstado", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(enums_1.RolUsuario.PACIENTE, enums_1.RolUsuario.ADMINISTRADOR),
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, crear_reserva_dto_1.CrearReservaDto]),
+    __metadata("design:returntype", void 0)
+], ReservasController.prototype, "crearReserva", null);
 exports.ReservasController = ReservasController = __decorate([
     (0, swagger_1.ApiTags)('reservas'),
     (0, swagger_1.ApiBearerAuth)(),
