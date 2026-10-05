@@ -145,6 +145,53 @@ let ReservasService = class ReservasService {
         });
         return this.aResponseDto(completa);
     }
+    async misTurnos(idUsuarioLogueado) {
+        const reservas = await this.reservasRepo.find({
+            where: { paciente: { id: idUsuarioLogueado } },
+            relations: { paciente: true, medico: { usuario: true } },
+            order: { fecha_hora: 'DESC' },
+        });
+        return reservas.map((r) => this.aResponseDto(r));
+    }
+    async listarTodas() {
+        const reservas = await this.reservasRepo.find({
+            relations: { paciente: true, medico: { usuario: true } },
+            order: { fecha_hora: 'DESC' },
+        });
+        return reservas.map((r) => this.aResponseDto(r));
+    }
+    async cancelar(idUsuarioLogueado, rolLogueado, reservaId) {
+        const reserva = await this.reservasRepo.findOne({
+            where: { id: reservaId },
+            relations: { paciente: true, medico: { usuario: true } },
+        });
+        if (!reserva) {
+            throw new common_1.NotFoundException('Turno no encontrado');
+        }
+        if (reserva.estado !== enums_1.EstadoReserva.ACTIVO) {
+            throw new common_1.BadRequestException('Solo se puede cancelar un turno en estado ACTIVO');
+        }
+        if (rolLogueado === enums_1.RolUsuario.PACIENTE) {
+            if (reserva.paciente.id !== idUsuarioLogueado) {
+                throw new common_1.ForbiddenException('No podés cancelar turnos de otro paciente');
+            }
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            const diaDeLaConsulta = new Date(reserva.fecha_hora);
+            diaDeLaConsulta.setHours(0, 0, 0, 0);
+            if (diaDeLaConsulta.getTime() <= hoy.getTime()) {
+                throw new common_1.BadRequestException('Solo se puede cancelar hasta el día anterior a la consulta');
+            }
+        }
+        else if (rolLogueado === enums_1.RolUsuario.ADMINISTRADOR) {
+            if (reserva.fecha_hora.getTime() <= new Date().getTime()) {
+                throw new common_1.BadRequestException('No se puede cancelar una consulta que ya comenzó');
+            }
+        }
+        reserva.estado = enums_1.EstadoReserva.CANCELADO;
+        const guardada = await this.reservasRepo.save(reserva);
+        return this.aResponseDto(guardada);
+    }
 };
 exports.ReservasService = ReservasService;
 exports.ReservasService = ReservasService = __decorate([

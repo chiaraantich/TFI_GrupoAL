@@ -175,4 +175,64 @@ export class ReservasService {
 
     return this.aResponseDto(completa!);
   }
+
+  async misTurnos(idUsuarioLogueado: number) {
+    const reservas = await this.reservasRepo.find({
+      where: { paciente: { id: idUsuarioLogueado } },
+      relations: { paciente: true, medico: { usuario: true } },
+      order: { fecha_hora: 'DESC' },
+    });
+    return reservas.map((r) => this.aResponseDto(r));
+  }
+
+  async listarTodas() {
+    const reservas = await this.reservasRepo.find({
+      relations: { paciente: true, medico: { usuario: true } },
+      order: { fecha_hora: 'DESC' },
+    });
+    return reservas.map((r) => this.aResponseDto(r));
+  }
+
+  async cancelar(idUsuarioLogueado: number, rolLogueado: RolUsuario, reservaId: number) {
+    const reserva = await this.reservasRepo.findOne({
+      where: { id: reservaId },
+      relations: { paciente: true, medico: { usuario: true } },
+    });
+    if (!reserva) {
+      throw new NotFoundException('Turno no encontrado');
+    }
+
+    if (reserva.estado !== EstadoReserva.ACTIVO) {
+      throw new BadRequestException('Solo se puede cancelar un turno en estado ACTIVO');
+    }
+
+    if (rolLogueado === RolUsuario.PACIENTE) {
+      if (reserva.paciente.id !== idUsuarioLogueado) {
+        throw new ForbiddenException('No podés cancelar turnos de otro paciente');
+      }
+
+      // Solo permitido hasta el día anterior a la consulta
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+      const diaDeLaConsulta = new Date(reserva.fecha_hora);
+      diaDeLaConsulta.setHours(0, 0, 0, 0);
+
+      if (diaDeLaConsulta.getTime() <= hoy.getTime()) {
+        throw new BadRequestException(
+          'Solo se puede cancelar hasta el día anterior a la consulta',
+        );
+      }
+    } else if (rolLogueado === RolUsuario.ADMINISTRADOR) {
+      // Permitido hasta el momento en que inicia la consulta
+      if (reserva.fecha_hora.getTime() <= new Date().getTime()) {
+        throw new BadRequestException(
+          'No se puede cancelar una consulta que ya comenzó',
+        );
+      }
+    }
+
+    reserva.estado = EstadoReserva.CANCELADO;
+    const guardada = await this.reservasRepo.save(reserva);
+    return this.aResponseDto(guardada);
+  }
 }

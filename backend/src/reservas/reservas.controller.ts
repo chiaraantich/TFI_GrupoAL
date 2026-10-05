@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -45,5 +46,23 @@ export class ReservasController {
   @Post()
   crearReserva(@Req() req: any, @Body() dto: CrearReservaDto) {
     return this.reservasService.crearReserva(req.user.id, req.user.rol, dto);
+  }
+
+  @Roles(RolUsuario.PACIENTE)
+  @Get('mis-turnos')
+  misTurnos(@Req() req: any) {
+    return this.reservasService.misTurnos(req.user.id);
+  }
+
+  @Roles(RolUsuario.ADMINISTRADOR)
+  @Get()
+  listarTodas() {
+    return this.reservasService.listarTodas();
+  }
+
+  @Roles(RolUsuario.PACIENTE, RolUsuario.ADMINISTRADOR)
+  @Delete(':id')
+  cancelar(@Req() req: any, @Param('id') id: string) {
+    return this.reservasService.cancelar(req.user.id, req.user.rol, Number(id));
   }
 }

@@ -36,6 +36,15 @@ let ReservasController = class ReservasController {
     crearReserva(req, dto) {
         return this.reservasService.crearReserva(req.user.id, req.user.rol, dto);
     }
+    misTurnos(req) {
+        return this.reservasService.misTurnos(req.user.id);
+    }
+    listarTodas() {
+        return this.reservasService.listarTodas();
+    }
+    cancelar(req, id) {
+        return this.reservasService.cancelar(req.user.id, req.user.rol, Number(id));
+    }
 };
 exports.ReservasController = ReservasController;
 __decorate([
@@ -66,6 +75,30 @@ __decorate([
     __metadata("design:paramtypes", [Object, crear_reserva_dto_1.CrearReservaDto]),
     __metadata("design:returntype", void 0)
 ], ReservasController.prototype, "crearReserva", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(enums_1.RolUsuario.PACIENTE),
+    (0, common_1.Get)('mis-turnos'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ReservasController.prototype, "misTurnos", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(enums_1.RolUsuario.ADMINISTRADOR),
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ReservasController.prototype, "listarTodas", null);
+__decorate([
+    (0, roles_decorator_1.Roles)(enums_1.RolUsuario.PACIENTE, enums_1.RolUsuario.ADMINISTRADOR),
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], ReservasController.prototype, "cancelar", null);
 exports.ReservasController = ReservasController = __decorate([
     (0, swagger_1.ApiTags)('reservas'),
     (0, swagger_1.ApiBearerAuth)(),

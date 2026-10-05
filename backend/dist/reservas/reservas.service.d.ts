@@ -15,4 +15,7 @@ export declare class ReservasService {
     turnosDelMedico(idUsuarioLogueado: number, fecha: string): Promise<ReservaResponseDto[]>;
     marcarEstado(idUsuarioLogueado: number, reservaId: number, dto: ActualizarEstadoReservaDto): Promise<ReservaResponseDto>;
     crearReserva(idUsuarioLogueado: number, rolLogueado: RolUsuario, dto: CrearReservaDto): Promise<ReservaResponseDto>;
+    misTurnos(idUsuarioLogueado: number): Promise<ReservaResponseDto[]>;
+    listarTodas(): Promise<ReservaResponseDto[]>;
+    cancelar(idUsuarioLogueado: number, rolLogueado: RolUsuario, reservaId: number): Promise<ReservaResponseDto>;
 }
