@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="header">
+    <h1>Turnos del día</h1>
+    <button (click)="logout()">Cerrar sesión</button>
+  </div>
+
+  <div class="filtro">
+    <label for="fecha">Fecha:</label>
+    <input id="fecha" type="date" [(ngModel)]="fecha" (change)="buscarTurnos()" />
+  </div>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+  <p *ngIf="cargando">Cargando...</p>
+
+  <table *ngIf="!cargando && turnos.length > 0">
+    <thead>
+      <tr>
+        <th>Hora</th>
+        <th>Paciente</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let turno of turnos">
+        <td>{{ turno.fecha_hora | date: 'HH:mm' }}</td>
+        <td>{{ turno.paciente_nombre }}</td>
+        <td>{{ turno.estado }}</td>
+        <td>
+          <button
+            *ngIf="turno.estado === 'ACTIVO'"
+            (click)="marcar(turno.id, 'ATENDIDO')"
+          >
+            Atendido
+          </button>
+          <button
+            *ngIf="turno.estado === 'ACTIVO'"
+            (click)="marcar(turno.id, 'AUSENTE')"
+          >
+            Ausente
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!cargando && turnos.length === 0">No hay turnos para esta fecha.</p>
+</div>

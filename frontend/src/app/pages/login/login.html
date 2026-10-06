@@ -1,0 +1,29 @@
+<div class="login-container">
+  <form (ngSubmit)="onSubmit()" class="login-form">
+    <h1>Clínica - Iniciar sesión</h1>
+
+    <label for="documento">Documento</label>
+    <input
+      id="documento"
+      type="text"
+      [(ngModel)]="documento"
+      name="documento"
+      required
+    />
+
+    <label for="clave">Clave</label>
+    <input
+      id="clave"
+      type="password"
+      [(ngModel)]="clave"
+      name="clave"
+      required
+    />
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+    <button type="submit" [disabled]="cargando">
+      {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+    </button>
+  </form>
+</div>
