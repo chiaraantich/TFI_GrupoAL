@@ -1,0 +1,1198 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>backend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">backend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search">
+    <button type="button"
+        class="search-input-clear"
+        aria-label="Clear search"
+        data-search-input-clear>&times;</button>
+</div>
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >ReservasService</li>
+</ol>
+
+<div class="io-file io-file-path" data-compodoc="entity-file-path">
+    <span class="icon ion-ios-document" aria-hidden="true"></span>
+    <code>src/reservas/reservas.service.ts</code>
+</div>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#api" 
+                class="nav-link"
+                
+                role="tab" id="api-tab" data-bs-toggle="tab" data-link="api">API</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+
+
+
+
+
+                <section data-compodoc="block-relationships">
+            <h3>Relationships</h3>
+
+            <div class="row pt-3">
+                <div class="col-sm-6">
+                    <h4>Used by</h4>
+                        <ul class="list-unstyled relationships-list">
+                                <li>
+                                            <code><a href="../modules/ReservasModule.html" target="_self" >ReservasModule</a></code>
+                                </li>
+                        </ul>
+                </div>
+
+                <div class="col-sm-6">
+                    <h4>Depends on</h4>
+                        <p class="comment"><i>No results matching.</i></p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="tab-pane fade " id="api">
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+
+        <table class="table table-sm table-bordered index-table">
+            <tbody>
+                <tr>
+                    <td class="col-md-3">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                    <td class="col-md-9">
+                        <ul class="index-list">
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                    <span class="modifier">Private</span>
+                                <a href="#aResponseDto" >aResponseDto</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#cancelar" >cancelar</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#crearReserva" >crearReserva</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#listarTodas" >listarTodas</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#marcarEstado" >marcarEstado</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#misTurnos" >misTurnos</a>
+                            </li>
+                            <li>
+                                <span class="reference-badge reference-badge--method" aria-hidden="true">M</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#turnosDelMedico" >turnosDelMedico</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(reservasRepo: <a href="../entitys/Reserva.html" target="_self">Repository&lt;Reserva&gt;</a>, medicosRepo: <a href="../entitys/Medico.html" target="_self">Repository&lt;Medico&gt;</a>, usuariosRepo: <a href="../entitys/Usuario.html" target="_self">Repository&lt;Usuario&gt;</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/reservas/reservas.service.ts:18</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>reservasRepo</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../entitys/Reserva.html" target="_self" >Repository&lt;Reserva&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>medicosRepo</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../entitys/Medico.html" target="_self" >Repository&lt;Medico&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>usuariosRepo</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../entitys/Usuario.html" target="_self" >Repository&lt;Usuario&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="aResponseDto"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>aResponseDto</b></span>
+                        <a href="#aResponseDto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>aResponseDto(reserva: <a href="../entitys/Reserva.html" target="_self">Reserva</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="28"
+                                    class="link-to-prism">src/reservas/reservas.service.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reserva</td>
+                                            <td>
+                                                            <code><a href="../entitys/Reserva.html" target="_self" >Reserva</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/ReservaResponseDto.html" target="_self" >ReservaResponseDto</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelar"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>cancelar</b></span>
+                        <a href="#cancelar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>cancelar(idUsuarioLogueado: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, rolLogueado: <a href="../miscellaneous/enumerations.html#RolUsuario" target="_self">RolUsuario</a>, reservaId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="196"
+                                    class="link-to-prism">src/reservas/reservas.service.ts:196</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>idUsuarioLogueado</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>rolLogueado</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/enumerations.html#RolUsuario" target="_self" >RolUsuario</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>reservaId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="crearReserva"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>crearReserva</b></span>
+                        <a href="#crearReserva"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>crearReserva(idUsuarioLogueado: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, rolLogueado: <a href="../miscellaneous/enumerations.html#RolUsuario" target="_self">RolUsuario</a>, dto: <a href="../classes/CrearReservaDto.html" target="_self">CrearReservaDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="92"
+                                    class="link-to-prism">src/reservas/reservas.service.ts:92</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>idUsuarioLogueado</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>rolLogueado</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/enumerations.html#RolUsuario" target="_self" >RolUsuario</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="../classes/CrearReservaDto.html" target="_self" >CrearReservaDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="listarTodas"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>listarTodas</b></span>
+                        <a href="#listarTodas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>listarTodas()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="188"
+                                    class="link-to-prism">src/reservas/reservas.service.ts:188</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="marcarEstado"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>marcarEstado</b></span>
+                        <a href="#marcarEstado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>marcarEstado(idUsuarioLogueado: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, reservaId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, dto: <a href="../classes/ActualizarEstadoReservaDto.html" target="_self">ActualizarEstadoReservaDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">src/reservas/reservas.service.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>idUsuarioLogueado</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>reservaId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="../classes/ActualizarEstadoReservaDto.html" target="_self" >ActualizarEstadoReservaDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="misTurnos"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>misTurnos</b></span>
+                        <a href="#misTurnos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>misTurnos(idUsuarioLogueado: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="179"
+                                    class="link-to-prism">src/reservas/reservas.service.ts:179</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>idUsuarioLogueado</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="turnosDelMedico"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>turnosDelMedico</b></span>
+                        <a href="#turnosDelMedico"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>turnosDelMedico(idUsuarioLogueado: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, fecha: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/reservas/reservas.service.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>idUsuarioLogueado</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>fecha</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from &#x27;@nestjs/common&#x27;;
+import { InjectRepository } from &#x27;@nestjs/typeorm&#x27;;
+import { Between, Repository } from &#x27;typeorm&#x27;;
+import { Reserva } from &#x27;./entities/reserva.entity&#x27;;
+import { Medico } from &#x27;../medicos/entities/medico.entity&#x27;;
+import { Usuario } from &#x27;../usuarios/entities/usuario.entity&#x27;;
+import { EstadoReserva, RolUsuario } from &#x27;../common/enums&#x27;;
+import { ActualizarEstadoReservaDto } from &#x27;./dto/actualizar-estado-reserva.dto&#x27;;
+import { ReservaResponseDto } from &#x27;./dto/reserva-response.dto&#x27;;
+import { CrearReservaDto } from &#x27;./dto/crear-reserva.dto&#x27;;
+
+@Injectable()
+export class ReservasService {
+  constructor(
+    @InjectRepository(Reserva)
+    private readonly reservasRepo: Repository&lt;Reserva&gt;,
+    @InjectRepository(Medico)
+    private readonly medicosRepo: Repository&lt;Medico&gt;,
+    @InjectRepository(Usuario)
+    private readonly usuariosRepo: Repository&lt;Usuario&gt;,
+  ) {}
+
+  private aResponseDto(reserva: Reserva): ReservaResponseDto {
+    return {
+      id: reserva.id,
+      fecha_hora: reserva.fecha_hora,
+      estado: reserva.estado,
+      valor_consulta: reserva.valor_consulta,
+      paciente_nombre: &#x60;${reserva.paciente.nombres} ${reserva.paciente.apellidos}&#x60;,
+      medico_nombre: &#x60;${reserva.medico.usuario.nombres} ${reserva.medico.usuario.apellidos}&#x60;,
+    };
+  }
+
+  async turnosDelMedico(idUsuarioLogueado: number, fecha: string) {
+    const medico &#x3D; await this.medicosRepo.findOne({
+      where: { usuario: { id: idUsuarioLogueado } },
+    });
+    if (!medico) {
+      throw new NotFoundException(&#x27;No se encontró un médico para este usuario&#x27;);
+    }
+
+    const inicio &#x3D; new Date(&#x60;${fecha}T00:00:00&#x60;);
+    const fin &#x3D; new Date(&#x60;${fecha}T23:59:59&#x60;);
+
+    const reservas &#x3D; await this.reservasRepo.find({
+      where: { medico: { id: medico.id }, fecha_hora: Between(inicio, fin) },
+      relations: { paciente: true, medico: { usuario: true } },
+      order: { fecha_hora: &#x27;ASC&#x27; },
+    });
+
+    return reservas.map((r) &#x3D;&gt; this.aResponseDto(r));
+  }
+
+  async marcarEstado(
+    idUsuarioLogueado: number,
+    reservaId: number,
+    dto: ActualizarEstadoReservaDto,
+  ) {
+    const medico &#x3D; await this.medicosRepo.findOne({
+      where: { usuario: { id: idUsuarioLogueado } },
+    });
+    if (!medico) {
+      throw new NotFoundException(&#x27;No se encontró un médico para este usuario&#x27;);
+    }
+
+    const reserva &#x3D; await this.reservasRepo.findOne({
+      where: { id: reservaId },
+      relations: { medico: { usuario: true }, paciente: true },
+    });
+    if (!reserva) {
+      throw new NotFoundException(&#x27;Turno no encontrado&#x27;);
+    }
+
+    if (reserva.medico.id !&#x3D;&#x3D; medico.id) {
+      throw new ForbiddenException(&#x27;No puedes modificar turnos de otro médico&#x27;);
+    }
+
+    if (reserva.estado !&#x3D;&#x3D; EstadoReserva.ACTIVO) {
+      throw new BadRequestException(&#x27;Solo se puede modificar un turno en estado ACTIVO&#x27;);
+    }
+
+    reserva.estado &#x3D; dto.estado;
+    const guardada &#x3D; await this.reservasRepo.save(reserva);
+    return this.aResponseDto(guardada);
+  }
+
+  async crearReserva(
+    idUsuarioLogueado: number,
+    rolLogueado: RolUsuario,
+    dto: CrearReservaDto,
+  ) {
+    // 1. Determinar para quién es el turno
+    let idPaciente: number;
+    if (rolLogueado &#x3D;&#x3D;&#x3D; RolUsuario.ADMINISTRADOR) {
+      if (!dto.id_paciente) {
+        throw new BadRequestException(&#x27;El admin debe indicar id_paciente&#x27;);
+      }
+      idPaciente &#x3D; dto.id_paciente;
+    } else {
+      idPaciente &#x3D; idUsuarioLogueado;
+    }
+
+    const paciente &#x3D; await this.usuariosRepo.findOne({ where: { id: idPaciente } });
+    if (!paciente) {
+      throw new NotFoundException(&#x27;Paciente no encontrado&#x27;);
+    }
+
+    const medico &#x3D; await this.medicosRepo.findOne({
+      where: { id: dto.id_medico },
+      relations: { usuario: true },
+    });
+    if (!medico) {
+      throw new NotFoundException(&#x27;Médico no encontrado&#x27;);
+    }
+
+    // 2. Validar horario: en punto, entre 8 y 15 hs (el turno de 15 a 16 es el último)
+    const fecha &#x3D; new Date(dto.fecha_hora);
+    if (isNaN(fecha.getTime())) {
+      throw new BadRequestException(&#x27;Fecha y hora inválidas&#x27;);
+    }
+    if (fecha.getMinutes() !&#x3D;&#x3D; 0 || fecha.getSeconds() !&#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;Los turnos son en horas en punto&#x27;);
+    }
+    const hora &#x3D; fecha.getHours();
+    if (hora &lt; 8 || hora &gt; 15) {
+      throw new BadRequestException(&#x27;El horario de atención es de 8 a 16 hs&#x27;);
+    }
+
+    // 3. No permitir reservar en el pasado
+    const ahora &#x3D; new Date();
+    if (fecha.getTime() &lt; ahora.getTime()) {
+      throw new BadRequestException(&#x27;No se puede reservar un turno en el pasado&#x27;);
+    }
+
+    // 4. Máximo 30 días de anticipación
+    const limite &#x3D; new Date();
+    limite.setDate(limite.getDate() + 30);
+    if (fecha.getTime() &gt; limite.getTime()) {
+      throw new BadRequestException(
+        &#x27;Las reservas se pueden hacer con un máximo de 30 días de anticipación&#x27;,
+      );
+    }
+
+    // 5. Que el horario no esté ocupado para ese médico
+    const existente &#x3D; await this.reservasRepo.findOne({
+      where: {
+        medico: { id: medico.id },
+        fecha_hora: fecha,
+        estado: EstadoReserva.ACTIVO,
+      },
+    });
+    if (existente) {
+      throw new BadRequestException(&#x27;Ese horario ya está ocupado para el médico&#x27;);
+    }
+
+    // 6. Crear la reserva, congelando el valor de consulta actual del médico
+    const nuevaReserva &#x3D; this.reservasRepo.create({
+      medico,
+      paciente,
+      fecha_hora: fecha,
+      estado: EstadoReserva.ACTIVO,
+      valor_consulta: medico.valor_consulta,
+    });
+
+    const guardada &#x3D; await this.reservasRepo.save(nuevaReserva);
+    const completa &#x3D; await this.reservasRepo.findOne({
+      where: { id: guardada.id },
+      relations: { paciente: true, medico: { usuario: true } },
+    });
+
+    return this.aResponseDto(completa!);
+  }
+
+  async misTurnos(idUsuarioLogueado: number) {
+    const reservas &#x3D; await this.reservasRepo.find({
+      where: { paciente: { id: idUsuarioLogueado } },
+      relations: { paciente: true, medico: { usuario: true } },
+      order: { fecha_hora: &#x27;DESC&#x27; },
+    });
+    return reservas.map((r) &#x3D;&gt; this.aResponseDto(r));
+  }
+
+  async listarTodas() {
+    const reservas &#x3D; await this.reservasRepo.find({
+      relations: { paciente: true, medico: { usuario: true } },
+      order: { fecha_hora: &#x27;DESC&#x27; },
+    });
+    return reservas.map((r) &#x3D;&gt; this.aResponseDto(r));
+  }
+
+  async cancelar(idUsuarioLogueado: number, rolLogueado: RolUsuario, reservaId: number) {
+    const reserva &#x3D; await this.reservasRepo.findOne({
+      where: { id: reservaId },
+      relations: { paciente: true, medico: { usuario: true } },
+    });
+    if (!reserva) {
+      throw new NotFoundException(&#x27;Turno no encontrado&#x27;);
+    }
+
+    if (reserva.estado !&#x3D;&#x3D; EstadoReserva.ACTIVO) {
+      throw new BadRequestException(&#x27;Solo se puede cancelar un turno en estado ACTIVO&#x27;);
+    }
+
+    if (rolLogueado &#x3D;&#x3D;&#x3D; RolUsuario.PACIENTE) {
+      if (reserva.paciente.id !&#x3D;&#x3D; idUsuarioLogueado) {
+        throw new ForbiddenException(&#x27;No podés cancelar turnos de otro paciente&#x27;);
+      }
+
+      // Solo permitido hasta el día anterior a la consulta
+      const hoy &#x3D; new Date();
+      hoy.setHours(0, 0, 0, 0);
+      const diaDeLaConsulta &#x3D; new Date(reserva.fecha_hora);
+      diaDeLaConsulta.setHours(0, 0, 0, 0);
+
+      if (diaDeLaConsulta.getTime() &lt;&#x3D; hoy.getTime()) {
+        throw new BadRequestException(
+          &#x27;Solo se puede cancelar hasta el día anterior a la consulta&#x27;,
+        );
+      }
+    } else if (rolLogueado &#x3D;&#x3D;&#x3D; RolUsuario.ADMINISTRADOR) {
+      // Permitido hasta el momento en que inicia la consulta
+      if (reserva.fecha_hora.getTime() &lt;&#x3D; new Date().getTime()) {
+        throw new BadRequestException(
+          &#x27;No se puede cancelar una consulta que ya comenzó&#x27;,
+        );
+      }
+    }
+
+    reserva.estado &#x3D; EstadoReserva.CANCELADO;
+    const guardada &#x3D; await this.reservasRepo.save(reserva);
+    return this.aResponseDto(guardada);
+  }
+}</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ReservasService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var updateDarkModeSwitchOffset = function () {
+                    var content = document.querySelector('.content');
+                    var scrollbarWidth = 0;
+
+                    if (content) {
+                         scrollbarWidth = Math.max(0, content.offsetWidth - content.clientWidth);
+                    }
+
+                    document.documentElement.style.setProperty(
+                         '--content-scrollbar-width',
+                         scrollbarWidth + 'px'
+                    );
+               };
+
+               updateDarkModeSwitchOffset();
+               requestAnimationFrame(updateDarkModeSwitchOffset);
+               window.addEventListener('resize', updateDarkModeSwitchOffset);
+
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
