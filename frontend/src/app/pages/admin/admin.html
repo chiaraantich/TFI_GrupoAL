@@ -1,1 +1,79 @@
-<p>admin works!</p>
+<div class="container">
+  <div class="header">
+    <h1>Panel de administración</h1>
+    <button (click)="logout()">Cerrar sesión</button>
+  </div>
+
+  <div class="seccion">
+    <h2>Reservar turno para un paciente</h2>
+    <label for="idPaciente">ID paciente:</label>
+    <input id="idPaciente" type="number" [(ngModel)]="idPaciente" name="idPaciente" />
+
+    <label for="idMedico">ID médico:</label>
+    <input id="idMedico" type="number" [(ngModel)]="idMedico" name="idMedico" />
+
+    <label for="fechaHora">Fecha y hora:</label>
+    <input
+      id="fechaHora"
+      type="datetime-local"
+      [(ngModel)]="fechaHora"
+      name="fechaHora"
+    />
+    <button (click)="reservar()">Reservar</button>
+  </div>
+
+  <div class="seccion">
+    <h2>Modificar valor de consulta</h2>
+    <label for="idMedicoValor">ID médico:</label>
+    <input
+      id="idMedicoValor"
+      type="number"
+      [(ngModel)]="idMedicoValor"
+      name="idMedicoValor"
+    />
+
+    <label for="nuevoValor">Nuevo valor:</label>
+    <input
+      id="nuevoValor"
+      type="number"
+      [(ngModel)]="nuevoValor"
+      name="nuevoValor"
+    />
+    <button (click)="actualizarValorConsulta()">Actualizar</button>
+  </div>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+  <p class="mensaje" *ngIf="mensaje">{{ mensaje }}</p>
+
+  <h2>Todos los turnos</h2>
+  <p *ngIf="cargando">Cargando...</p>
+
+  <table *ngIf="!cargando && turnos.length > 0">
+    <thead>
+      <tr>
+        <th>Fecha y hora</th>
+        <th>Paciente</th>
+        <th>Médico</th>
+        <th>Estado</th>
+        <th>Valor</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let turno of turnos">
+        <td>{{ turno.fecha_hora | date: 'dd/MM/yyyy HH:mm' }}</td>
+        <td>{{ turno.paciente_nombre }}</td>
+        <td>{{ turno.medico_nombre }}</td>
+        <td>{{ turno.estado }}</td>
+        <td>{{ turno.valor_consulta }}</td>
+        <td>
+          <button *ngIf="puedeCancel(turno)" (click)="cancelar(turno.id)">
+            Cancelar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!cargando && turnos.length === 0">No hay turnos cargados.</p>
+</div>
