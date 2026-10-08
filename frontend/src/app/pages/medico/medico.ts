@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -23,6 +23,7 @@ export class Medico implements OnInit {
     private reservasService: ReservasService,
     private authService: AuthService,
     private router: Router,
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -36,10 +37,12 @@ export class Medico implements OnInit {
       next: (data) => {
         this.turnos = data;
         this.cargando = false;
+        this.cd.detectChanges();
       },
       error: () => {
         this.error = 'No se pudieron cargar los turnos';
         this.cargando = false;
+        this.cd.detectChanges();
       },
     });
   }
@@ -47,7 +50,10 @@ export class Medico implements OnInit {
   marcar(id: number, estado: 'ATENDIDO' | 'AUSENTE'): void {
     this.reservasService.marcarEstado(id, estado).subscribe({
       next: () => this.buscarTurnos(),
-      error: () => (this.error = 'No se pudo actualizar el turno'),
+      error: () => {
+        this.error = 'No se pudo actualizar el turno';
+        this.cd.detectChanges();
+        },
     });
   }
 
