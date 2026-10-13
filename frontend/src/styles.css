@@ -1,3 +1,22 @@
+:root {
+  --navy: #263259;
+  --navy-dark: #1d2747;
+  --periwinkle: #8e99c5;
+  --tint: #eef1f9;
+  --bg: #f4f6fb;
+  --text: #1f2430;
+  --muted: #5f6675;
+  --line: #dde1ec;
+  --green: #2f7d32;
+  --green-soft: #e7f4e8;
+  --amber: #8a5a00;
+  --amber-soft: #fbf1df;
+  --red: #b42318;
+  --red-soft: #fef3f2;
+  --radius: 12px;
+  --shadow: 0 1px 2px rgba(38, 50, 89, 0.06), 0 8px 24px rgba(38, 50, 89, 0.07);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -5,5 +24,307 @@
 body {
   margin: 0;
   font-family: 'Manrope', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+/* ---------- Paneles y títulos ---------- */
+.panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.panel h3 {
+  margin: 0 0 1.25rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.section-title {
+  margin: 2.5rem 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+/* ---------- Formularios ---------- */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.control {
+  display: flex;
+  flex: 1 1 200px;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.control label,
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #3d4352;
+}
+
+.label {
+  margin: 0 0 0.6rem;
+}
+
+.control select,
+.control input {
+  height: 2.75rem;
+  padding: 0 0.75rem;
+  border: 1px solid #c5cad8;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.control select:focus,
+.control input:focus {
+  outline: 2px solid var(--periwinkle);
+  outline-offset: 1px;
+  border-color: var(--navy);
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.75rem;
+  padding: 0 1.25rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--periwinkle);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  width: 100%;
+  background: var(--navy);
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(38, 50, 89, 0.25);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--navy-dark);
+}
+
+.btn--outline {
+  background: #fff;
+  color: var(--navy);
+  border-color: var(--navy);
+}
+
+.btn--danger {
+  background: transparent;
+  color: var(--red);
+  border-color: #f3c9c4;
+}
+
+.btn--danger:hover {
+  background: var(--red-soft);
+}
+
+.btn--sm {
+  height: 2.25rem;
+  padding: 0 0.9rem;
+  font-size: 0.8125rem;
+}
+
+/* ---------- Estados ---------- */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge.activo {
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+
+.badge.atendido {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.badge.ausente {
+  background: var(--red-soft);
+  color: var(--red);
+}
+
+.badge.cancelado {
+  background: #eef0f4;
+  color: var(--muted);
+}
+
+/* ---------- Selector de horarios ---------- */
+.slot-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 0.5rem;
+}
+
+.slot-pick {
+  height: 2.75rem;
+  border: 1px solid #c5cad8;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--navy);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.slot-pick:hover {
+  border-color: var(--navy);
+  background: var(--tint);
+}
+
+.slot-pick:focus-visible {
+  outline: 3px solid var(--periwinkle);
+  outline-offset: 2px;
+}
+
+.slot-pick.selected {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+.hint,
+.empty-note {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 8px;
+  background: var(--tint);
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+/* ---------- Resumen de reserva ---------- */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #edf0f6;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.summary-row .v {
+  font-weight: 700;
+  color: var(--navy);
+  text-align: right;
+}
+
+.price {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
+.note {
+  margin: 0 0 1.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.note--top {
+  margin: 0.75rem 0 0;
+}
+
+/* ---------- Tablas ---------- */
+.table-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+table.list {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.list th {
+  padding: 0.8rem 1rem;
+  background: #f7f8fc;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+table.list td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #edf0f6;
+  font-size: 0.9375rem;
+}
+
+table.list tr:last-child td {
+  border-bottom: 0;
+}
+
+table.list .num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Mensajes ---------- */
+.msg {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+}
+
+.msg--ok {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.msg--error {
+  background: var(--red-soft);
+  color: var(--red);
 }

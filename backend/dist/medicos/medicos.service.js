@@ -17,10 +17,27 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const medico_entity_1 = require("./entities/medico.entity");
+const enums_1 = require("../common/enums");
 let MedicosService = class MedicosService {
     medicosRepo;
     constructor(medicosRepo) {
         this.medicosRepo = medicosRepo;
+    }
+    aDto(medico) {
+        return {
+            id: medico.id,
+            nombre: `${medico.usuario.nombres} ${medico.usuario.apellidos}`,
+            matricula: medico.matricula,
+            valor_consulta: medico.valor_consulta,
+        };
+    }
+    async listar() {
+        const medicos = await this.medicosRepo.find({
+            where: { usuario: { estado: enums_1.EstadoUsuario.ACTIVO } },
+            relations: { usuario: true },
+            order: { id: 'ASC' },
+        });
+        return medicos.map((m) => this.aDto(m));
     }
     async actualizarValorConsulta(medicoId, dto) {
         const medico = await this.medicosRepo.findOne({
@@ -31,7 +48,8 @@ let MedicosService = class MedicosService {
             throw new common_1.NotFoundException('Médico no encontrado');
         }
         medico.valor_consulta = dto.valor_consulta;
-        return this.medicosRepo.save(medico);
+        const guardado = await this.medicosRepo.save(medico);
+        return this.aDto(guardado);
     }
 };
 exports.MedicosService = MedicosService;

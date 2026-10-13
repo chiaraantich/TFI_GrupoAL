@@ -18,6 +18,7 @@ import { Roles } from '../auth/roles.decorator';
 import { RolUsuario } from '../common/enums';
 import { ActualizarEstadoReservaDto } from './dto/actualizar-estado-reserva.dto';
 import { CrearReservaDto } from './dto/crear-reserva.dto';
+import { DisponibilidadQueryDto } from './dto/disponibilidad-query.dto';
 
 @ApiTags('reservas')
 @ApiBearerAuth()
@@ -32,20 +33,10 @@ export class ReservasController {
     return this.reservasService.turnosDelMedico(req.user.id, fecha);
   }
 
-  @Roles(RolUsuario.MEDICO)
-  @Patch(':id/estado')
-  marcarEstado(
-    @Req() req: any,
-    @Param('id') id: string,
-    @Body() dto: ActualizarEstadoReservaDto,
-  ) {
-    return this.reservasService.marcarEstado(req.user.id, Number(id), dto);
-  }
-
   @Roles(RolUsuario.PACIENTE, RolUsuario.ADMINISTRADOR)
-  @Post()
-  crearReserva(@Req() req: any, @Body() dto: CrearReservaDto) {
-    return this.reservasService.crearReserva(req.user.id, req.user.rol, dto);
+  @Get('disponibilidad')
+  disponibilidad(@Query() query: DisponibilidadQueryDto) {
+    return this.reservasService.horariosDisponibles(query.id_medico, query.fecha);
   }
 
   @Roles(RolUsuario.PACIENTE)
@@ -58,6 +49,22 @@ export class ReservasController {
   @Get()
   listarTodas() {
     return this.reservasService.listarTodas();
+  }
+
+  @Roles(RolUsuario.PACIENTE, RolUsuario.ADMINISTRADOR)
+  @Post()
+  crearReserva(@Req() req: any, @Body() dto: CrearReservaDto) {
+    return this.reservasService.crearReserva(req.user.id, req.user.rol, dto);
+  }
+
+  @Roles(RolUsuario.MEDICO)
+  @Patch(':id/estado')
+  marcarEstado(
+    @Req() req: any,
+    @Param('id') id: string,
+    @Body() dto: ActualizarEstadoReservaDto,
+  ) {
+    return this.reservasService.marcarEstado(req.user.id, Number(id), dto);
   }
 
   @Roles(RolUsuario.PACIENTE, RolUsuario.ADMINISTRADOR)

@@ -3,6 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reserva } from '../models/reserva.model';
 
+export interface Disponibilidad {
+  id_medico: number;
+  fecha: string;
+  horarios: string[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class ReservasService {
   constructor(private http: HttpClient) {}
@@ -21,6 +27,12 @@ export class ReservasService {
 
   listarTodas(): Observable<Reserva[]> {
     return this.http.get<Reserva[]>('/api/reservas');
+  }
+
+  disponibilidad(idMedico: number, fecha: string): Observable<Disponibilidad> {
+    return this.http.get<Disponibilidad>(
+      `/api/reservas/disponibilidad?id_medico=${idMedico}&fecha=${fecha}`,
+    );
   }
 
   crearReserva(dto: {

@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { MedicosService } from './medicos.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -13,6 +13,12 @@ import { ActualizarValorConsultaDto } from './dto/actualizar-valor-consulta.dto'
 @Controller('medicos')
 export class MedicosController {
   constructor(private readonly medicosService: MedicosService) {}
+
+  @Roles(RolUsuario.PACIENTE, RolUsuario.ADMINISTRADOR)
+  @Get()
+  listar() {
+    return this.medicosService.listar();
+  }
 
   @Roles(RolUsuario.ADMINISTRADOR)
   @Patch(':id/valor-consulta')

@@ -1,51 +1,140 @@
-<div class="container">
-  <div class="header">
-    <h1>Mis turnos</h1>
-    <button (click)="logout()">Cerrar sesión</button>
+<app-shell
+  rol="Paciente"
+  titulo="Reservar turno"
+  subtitulo="Hasta 30 días de anticipación · consultas de 1 hora, de 8 a 16 hs"
+>
+  @if (error) {
+    <p class="msg msg--error" role="alert">{{ error }}</p>
+  }
+  @if (mensaje) {
+    <p class="msg msg--ok" role="status">{{ mensaje }}</p>
+  }
+
+  <div class="booking">
+    <section class="panel">
+      <h3>Elegí médico, fecha y horario</h3>
+
+      <div class="controls">
+        <div class="control">
+          <label for="medico">Médico</label>
+          <select id="medico" [ngModel]="idMedico" (ngModelChange)="cambiarMedico($event)">
+            @for (m of medicos; track m.id) {
+              <option [ngValue]="m.id">{{ m.nombre }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="control">
+          <label for="fecha">Fecha</label>
+          <input
+            id="fecha"
+            type="date"
+            [min]="hoy"
+            [max]="maxFecha"
+            [ngModel]="fecha"
+            (ngModelChange)="cambiarFecha($event)"
+          />
+        </div>
+      </div>
+
+      <p class="label">Horarios disponibles</p>
+      @if (cargandoHorarios) {
+        <p class="hint">Buscando horarios...</p>
+      } @else if (horarios.length === 0) {
+        <p class="empty-note">No hay horarios disponibles para esta fecha. Probá con otro día.</p>
+      } @else {
+        <div class="slot-picker">
+          @for (h of horarios; track h) {
+            <button
+              type="button"
+              class="slot-pick"
+              [class.selected]="h === horaElegida"
+              [attr.aria-pressed]="h === horaElegida"
+              (click)="elegirHora(h)"
+            >
+              {{ h }}
+            </button>
+          }
+        </div>
+      }
+    </section>
+
+    <section class="panel">
+      <h3>Resumen de la reserva</h3>
+      <div class="summary-row">
+        <span>Médico</span>
+        <span class="v">{{ medicoElegido?.nombre ?? '—' }}</span>
+      </div>
+      <div class="summary-row">
+        <span>Fecha</span>
+        <span class="v">{{ fecha ? (fecha | date: 'dd/MM/yyyy') : '—' }}</span>
+      </div>
+      <div class="summary-row">
+        <span>Horario</span>
+        <span class="v">{{ horaElegida ? horaElegida + ' – ' + horaFin : '—' }}</span>
+      </div>
+      <div class="summary-row">
+        <span>Cobertura</span>
+        <span class="v">Particular (sin obra social)</span>
+      </div>
+
+      <div class="price">{{ precio }}</div>
+      <p class="note">El valor de la consulta queda fijado al momento de confirmar la reserva.</p>
+
+      <button
+        type="button"
+        class="btn btn--primary"
+        [disabled]="!horaElegida || confirmando"
+        (click)="confirmar()"
+      >
+        {{ confirmando ? 'Reservando...' : 'Confirmar reserva' }}
+      </button>
+    </section>
   </div>
 
-  <div class="reservar">
-    <h2>Reservar nuevo turno</h2>
-    <label for="fechaHora">Fecha y hora:</label>
-    <input
-      id="fechaHora"
-      type="datetime-local"
-      [(ngModel)]="fechaHora"
-      name="fechaHora"
-    />
-    <button (click)="reservar()">Reservar</button>
-  </div>
+  <h2 class="section-title">Mis turnos</h2>
 
-  <p class="error" *ngIf="error">{{ error }}</p>
-  <p class="mensaje" *ngIf="mensaje">{{ mensaje }}</p>
-
-  <h2>Historial</h2>
-  <p *ngIf="cargando">Cargando...</p>
-
-  <table *ngIf="!cargando && turnos.length > 0">
-    <thead>
-      <tr>
-        <th>Fecha y hora</th>
-        <th>Médico</th>
-        <th>Estado</th>
-        <th>Valor</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let turno of turnos">
-        <td>{{ turno.fecha_hora | date: 'dd/MM/yyyy HH:mm' }}</td>
-        <td>{{ turno.medico_nombre }}</td>
-        <td>{{ turno.estado }}</td>
-        <td>{{ turno.valor_consulta }}</td>
-        <td>
-          <button *ngIf="puedeCancel(turno)" (click)="cancelar(turno.id)">
-            Cancelar
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <p *ngIf="!cargando && turnos.length === 0">No tenés turnos reservados.</p>
-</div>
+  @if (cargando) {
+    <p class="hint">Cargando...</p>
+  } @else if (turnos.length === 0) {
+    <p class="empty-note">Todavía no tenés turnos reservados.</p>
+  } @else {
+    <div class="table-wrap">
+      <table class="list">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Horario</th>
+            <th>Médico</th>
+            <th>Estado</th>
+            <th>Valor</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of turnos; track t.id) {
+            <tr>
+              <td>{{ t.fecha_hora | date: 'dd/MM/yyyy' }}</td>
+              <td class="num">{{ t.fecha_hora | date: 'HH:mm' }}</td>
+              <td>{{ t.medico_nombre }}</td>
+              <td>
+                <span [class]="'badge ' + t.estado.toLowerCase()">{{ etiqueta(t.estado) }}</span>
+              </td>
+              <td class="num">{{ formatoPrecio(t.valor_consulta) }}</td>
+              <td>
+                @if (puedeCancelar(t)) {
+                  <button type="button" class="btn btn--danger btn--sm" (click)="cancelar(t.id)">
+                    Cancelar
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="note note--top">
+      La cancelación solo está disponible hasta el día anterior a la consulta.
+    </p>
+  }
+</app-shell>

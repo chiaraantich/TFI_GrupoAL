@@ -13,6 +13,7 @@ import { EstadoReserva, RolUsuario } from '../common/enums';
 import { ActualizarEstadoReservaDto } from './dto/actualizar-estado-reserva.dto';
 import { ReservaResponseDto } from './dto/reserva-response.dto';
 import { CrearReservaDto } from './dto/crear-reserva.dto';
+import { DisponibilidadResponseDto } from './dto/disponibilidad-response.dto';
 
 @Injectable()
 export class ReservasService {
@@ -235,4 +236,45 @@ export class ReservasService {
     const guardada = await this.reservasRepo.save(reserva);
     return this.aResponseDto(guardada);
   }
+
+    async horariosDisponibles(
+      idMedico: number,
+      fecha: string,
+    ): Promise<DisponibilidadResponseDto> {
+      const medico = await this.medicosRepo.findOne({ where: { id: idMedico } });
+      if (!medico) {
+        throw new NotFoundException('Médico no encontrado');
+      }
+
+      const dia = fecha.slice(0, 10);
+      const inicioDia = new Date(`${dia}T00:00:00`);
+      const finDia = new Date(`${dia}T23:59:59`);
+
+      const ahora = new Date();
+      const limite = new Date();
+      limite.setDate(limite.getDate() + 30);
+
+      const ocupadas = await this.reservasRepo.find({
+        where: {
+          medico: { id: medico.id },
+          estado: EstadoReserva.ACTIVO,
+          fecha_hora: Between(inicioDia, finDia),
+        },
+      });
+      const horasOcupadas = new Set(ocupadas.map((r) => r.fecha_hora.getHours()));
+
+      const horarios: string[] = [];
+      for (let hora = 8; hora <= 15; hora++) {
+        const hh = String(hora).padStart(2, '0');
+        const slot = new Date(`${dia}T${hh}:00:00`);
+
+        const yaPaso = slot.getTime() < ahora.getTime();
+        const muyLejos = slot.getTime() > limite.getTime();
+        if (yaPaso || muyLejos || horasOcupadas.has(hora)) continue;
+
+        horarios.push(`${hh}:00`);
+      }
+
+      return { id_medico: medico.id, fecha: dia, horarios };
+    }
 }

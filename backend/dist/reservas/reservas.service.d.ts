@@ -6,6 +6,7 @@ import { RolUsuario } from '../common/enums';
 import { ActualizarEstadoReservaDto } from './dto/actualizar-estado-reserva.dto';
 import { ReservaResponseDto } from './dto/reserva-response.dto';
 import { CrearReservaDto } from './dto/crear-reserva.dto';
+import { DisponibilidadResponseDto } from './dto/disponibilidad-response.dto';
 export declare class ReservasService {
     private readonly reservasRepo;
     private readonly medicosRepo;
@@ -18,4 +19,5 @@ export declare class ReservasService {
     misTurnos(idUsuarioLogueado: number): Promise<ReservaResponseDto[]>;
     listarTodas(): Promise<ReservaResponseDto[]>;
     cancelar(idUsuarioLogueado: number, rolLogueado: RolUsuario, reservaId: number): Promise<ReservaResponseDto>;
+    horariosDisponibles(idMedico: number, fecha: string): Promise<DisponibilidadResponseDto>;
 }

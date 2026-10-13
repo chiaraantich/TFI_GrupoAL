@@ -1,53 +1,12 @@
-.container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1rem;
-  font-family: sans-serif;
+.booking {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.reservar {
-  margin: 1.5rem 0;
-  padding: 1rem;
-  background-color: #f9f9f9;
-  border-radius: 6px;
-}
-
-.reservar label {
-  margin-right: 0.5rem;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 0.5rem;
-  text-align: left;
-}
-
-th {
-  background-color: #f2f2f2;
-}
-
-button {
-  padding: 0.4rem 0.8rem;
-  cursor: pointer;
-}
-
-.error {
-  color: red;
-}
-
-.mensaje {
-  color: green;
+@media (max-width: 900px) {
+  .booking {
+    grid-template-columns: 1fr;
+  }
 }

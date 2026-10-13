@@ -26,11 +26,21 @@ let MedicosController = class MedicosController {
     constructor(medicosService) {
         this.medicosService = medicosService;
     }
+    listar() {
+        return this.medicosService.listar();
+    }
     actualizarValorConsulta(id, dto) {
         return this.medicosService.actualizarValorConsulta(Number(id), dto);
     }
 };
 exports.MedicosController = MedicosController;
+__decorate([
+    (0, roles_decorator_1.Roles)(enums_1.RolUsuario.PACIENTE, enums_1.RolUsuario.ADMINISTRADOR),
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], MedicosController.prototype, "listar", null);
 __decorate([
     (0, roles_decorator_1.Roles)(enums_1.RolUsuario.ADMINISTRADOR),
     (0, common_1.Patch)(':id/valor-consulta'),
