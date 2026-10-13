@@ -1,29 +1,63 @@
-<div class="login-container">
-  <form (ngSubmit)="onSubmit()" class="login-form">
-    <h1>Clínica - Iniciar sesión</h1>
+<main class="login">
+  <section class="hero">
+    <img class="hero__bg" src="/img/fondo-clinica.png" alt="" />
+    <img class="hero__tint" src="/img/filtro-fondo.png" alt="" />
+    <div class="hero__shade"></div>
 
-    <label for="documento">Documento</label>
-    <input
-      id="documento"
-      type="text"
-      [(ngModel)]="documento"
-      name="documento"
-      required
-    />
+    <div class="hero__brand">
+      <img src="/img/logo-blanco.png" alt="" width="56" height="56" />
+      <span>ProHealth</span>
+    </div>
 
-    <label for="clave">Clave</label>
-    <input
-      id="clave"
-      type="password"
-      [(ngModel)]="clave"
-      name="clave"
-      required
-    />
+    <div class="hero__content">
+      <p class="hero__eyebrow">Centro Médico Regional de Salud Familiar</p>
+      <h2 class="hero__title">Tu salud,<br />nuestra prioridad</h2>
+      <p class="hero__text">
+        Reservá y gestioná tus turnos médicos de forma simple, rápida y segura. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Suscipit quam nisi soluta veniam dolor quasi porro earum neque beatae distinctio, at odio, quibusdam alias necessitatibus id dolorum. Error, quae minima.
+      </p>
+    </div>
 
-    <p class="error" *ngIf="error">{{ error }}</p>
+    <p class="hero__copy">© Centro Médico ProHealth</p>
+  </section>
 
-    <button type="submit" [disabled]="cargando">
-      {{ cargando ? 'Ingresando...' : 'Ingresar' }}
-    </button>
-  </form>
-</div>
+  <section class="panel">
+    <form class="form" (ngSubmit)="onSubmit()">
+      <img class="form__logo" src="/img/logo-azul.png" alt="ProHealth" width="92" height="92" />
+      <h1 class="form__title">Iniciar sesión</h1>
+      <p class="form__sub">Ingresa con las credenciales que te asignó la clínica.</p>
+
+      <div class="field">
+        <label for="documento">Usuario</label>
+        <input
+          id="documento"
+          name="documento"
+          type="text"
+          inputmode="numeric"
+          autocomplete="username"
+          placeholder="Ingresa tu documento"
+          [(ngModel)]="documento"
+          required
+        />
+      </div>
+
+      <div class="field">
+        <label for="clave">Contraseña</label>
+        <input
+          id="clave"
+          name="clave"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Ingresa tu contraseña"
+          [(ngModel)]="clave"
+          required
+        />
+      </div>
+
+      <p class="error" role="alert" *ngIf="error">{{ error }}</p>
+
+      <button class="btn" type="submit" [disabled]="cargando">
+        {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+  </section>
+</main>
