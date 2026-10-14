@@ -328,3 +328,101 @@ table.list .num {
   background: var(--red-soft);
   color: var(--red);
 }
+
+/* ---------- Tarjetas de resumen ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 780px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.stat__n {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--navy);
+}
+
+.stat__l {
+  margin-top: 0.15rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+/* ---------- Grilla horaria del día ---------- */
+.day-grid {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.day-row {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  min-height: 4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.day-row:last-child {
+  border-bottom: 0;
+}
+
+.day-hour {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.9rem;
+  background: var(--tint);
+  border-right: 1px solid var(--line);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+
+.day-slot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  padding: 0.75rem 1.25rem;
+}
+
+.day-slot--empty {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.day-who {
+  min-width: 11rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.day-meta {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.day-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}

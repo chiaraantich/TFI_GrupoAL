@@ -10,4 +10,10 @@ export class MedicosService {
   listar(): Observable<MedicoInfo[]> {
     return this.http.get<MedicoInfo[]>('/api/medicos');
   }
+
+  actualizarValor(id: number, valor: number): Observable<MedicoInfo> {
+    return this.http.patch<MedicoInfo>(`/api/medicos/${id}/valor-consulta`, {
+      valor_consulta: valor,
+    });
+  }
 }

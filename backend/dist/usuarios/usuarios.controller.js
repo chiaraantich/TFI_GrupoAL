@@ -11,15 +11,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsuariosController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const usuarios_service_1 = require("./usuarios.service");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const roles_guard_1 = require("../auth/roles.guard");
+const roles_decorator_1 = require("../auth/roles.decorator");
+const enums_1 = require("../common/enums");
 let UsuariosController = class UsuariosController {
     usuariosService;
     constructor(usuariosService) {
         this.usuariosService = usuariosService;
     }
+    listarPacientes() {
+        return this.usuariosService.listarPacientes();
+    }
 };
 exports.UsuariosController = UsuariosController;
+__decorate([
+    (0, roles_decorator_1.Roles)(enums_1.RolUsuario.ADMINISTRADOR),
+    (0, common_1.Get)('pacientes'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], UsuariosController.prototype, "listarPacientes", null);
 exports.UsuariosController = UsuariosController = __decorate([
+    (0, swagger_1.ApiTags)('usuarios'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
     (0, common_1.Controller)('usuarios'),
     __metadata("design:paramtypes", [usuarios_service_1.UsuariosService])
 ], UsuariosController);

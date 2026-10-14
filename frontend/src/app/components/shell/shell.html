@@ -7,6 +7,22 @@
 
     <p class="side__role">{{ rol }}</p>
 
+    @if (secciones.length) {
+      <nav class="side__nav" aria-label="Secciones">
+        @for (s of secciones; track s.id) {
+          <button
+            type="button"
+            class="side__link"
+            [class.active]="s.id === activa"
+            [attr.aria-current]="s.id === activa ? 'page' : null"
+            (click)="elegir(s.id)"
+          >
+            <span class="dot"></span>{{ s.etiqueta }}
+          </button>
+        }
+      </nav>
+    }
+
     <div class="side__user">
       <strong>{{ nombre }}</strong>
       <span>Sesión activa</span>

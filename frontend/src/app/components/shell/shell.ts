@@ -1,6 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+
+export interface SeccionMenu {
+  id: string;
+  etiqueta: string;
+}
 
 @Component({
   selector: 'app-shell',
@@ -12,6 +17,10 @@ export class Shell {
   @Input() rol = '';
   @Input() titulo = '';
   @Input() subtitulo = '';
+  @Input() secciones: SeccionMenu[] = [];
+  @Input() activa = '';
+  @Output() seleccion = new EventEmitter<string>();
+
   nombre = '';
 
   constructor(
@@ -20,6 +29,10 @@ export class Shell {
   ) {
     const usuario = this.authService.getUsuario();
     this.nombre = usuario ? `${usuario.nombres} ${usuario.apellidos}` : '';
+  }
+
+  elegir(id: string): void {
+    this.seleccion.emit(id);
   }
 
   logout(): void {

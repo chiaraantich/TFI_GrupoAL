@@ -1,79 +1,236 @@
-<div class="container">
-  <div class="header">
-    <h1>Panel de administración</h1>
-    <button (click)="logout()">Cerrar sesión</button>
-  </div>
+<app-shell
+  rol="Administrador"
+  [titulo]="titulo"
+  [subtitulo]="subtitulo"
+  [secciones]="secciones"
+  [activa]="seccion"
+  (seleccion)="cambiarSeccion($event)"
+>
+  @if (error) {
+    <p class="msg msg--error" role="alert">{{ error }}</p>
+  }
+  @if (mensaje) {
+    <p class="msg msg--ok" role="status">{{ mensaje }}</p>
+  }
 
-  <div class="seccion">
-    <h2>Reservar turno para un paciente</h2>
-    <label for="idPaciente">ID paciente:</label>
-    <input id="idPaciente" type="number" [(ngModel)]="idPaciente" name="idPaciente" />
+  <!-- ===== Reservar turno ===== -->
+  @if (seccion === 'reservar') {
+    <div class="booking">
+      <section class="panel">
+        <h3>Elegí paciente, médico, fecha y horario</h3>
 
-    <label for="idMedico">ID médico:</label>
-    <input id="idMedico" type="number" [(ngModel)]="idMedico" name="idMedico" />
+        <div class="controls">
+          <div class="control">
+            <label for="paciente">Paciente</label>
+            <select id="paciente" [ngModel]="idPaciente" (ngModelChange)="cambiarPaciente($event)">
+              @for (p of pacientes; track p.id) {
+                <option [ngValue]="p.id">{{ p.nombre }} · {{ p.documento }}</option>
+              }
+            </select>
+          </div>
 
-    <label for="fechaHora">Fecha y hora:</label>
-    <input
-      id="fechaHora"
-      type="datetime-local"
-      [(ngModel)]="fechaHora"
-      name="fechaHora"
-    />
-    <button (click)="reservar()">Reservar</button>
-  </div>
+          <div class="control">
+            <label for="medico">Médico</label>
+            <select id="medico" [ngModel]="idMedico" (ngModelChange)="cambiarMedico($event)">
+              @for (m of medicos; track m.id) {
+                <option [ngValue]="m.id">{{ m.nombre }}</option>
+              }
+            </select>
+          </div>
 
-  <div class="seccion">
-    <h2>Modificar valor de consulta</h2>
-    <label for="idMedicoValor">ID médico:</label>
-    <input
-      id="idMedicoValor"
-      type="number"
-      [(ngModel)]="idMedicoValor"
-      name="idMedicoValor"
-    />
+          <div class="control">
+            <label for="fecha">Fecha</label>
+            <input
+              id="fecha"
+              type="date"
+              [min]="hoy"
+              [max]="maxFecha"
+              [ngModel]="fecha"
+              (ngModelChange)="cambiarFecha($event)"
+            />
+          </div>
+        </div>
 
-    <label for="nuevoValor">Nuevo valor:</label>
-    <input
-      id="nuevoValor"
-      type="number"
-      [(ngModel)]="nuevoValor"
-      name="nuevoValor"
-    />
-    <button (click)="actualizarValorConsulta()">Actualizar</button>
-  </div>
+        <p class="label">Horarios disponibles</p>
+        @if (cargandoHorarios) {
+          <p class="hint">Buscando horarios...</p>
+        } @else if (horarios.length === 0) {
+          <p class="empty-note">No hay horarios disponibles para esta fecha. Probá con otro día.</p>
+        } @else {
+          <div class="slot-picker">
+            @for (h of horarios; track h) {
+              <button
+                type="button"
+                class="slot-pick"
+                [class.selected]="h === horaElegida"
+                [attr.aria-pressed]="h === horaElegida"
+                (click)="elegirHora(h)"
+              >
+                {{ h }}
+              </button>
+            }
+          </div>
+        }
+      </section>
 
-  <p class="error" *ngIf="error">{{ error }}</p>
-  <p class="mensaje" *ngIf="mensaje">{{ mensaje }}</p>
+      <section class="panel">
+        <h3>Resumen de la reserva</h3>
+        <div class="summary-row">
+          <span>Paciente</span>
+          <span class="v">{{ pacienteElegido?.nombre ?? '—' }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Médico</span>
+          <span class="v">{{ medicoElegido?.nombre ?? '—' }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Fecha</span>
+          <span class="v">{{ fecha ? (fecha | date: 'dd/MM/yyyy') : '—' }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Horario</span>
+          <span class="v">{{ horaElegida ? horaElegida + ' – ' + horaFin : '—' }}</span>
+        </div>
 
-  <h2>Todos los turnos</h2>
-  <p *ngIf="cargando">Cargando...</p>
+        <div class="price">{{ precio }}</div>
+        <p class="note">El valor de la consulta queda fijado al momento de confirmar la reserva.</p>
 
-  <table *ngIf="!cargando && turnos.length > 0">
-    <thead>
-      <tr>
-        <th>Fecha y hora</th>
-        <th>Paciente</th>
-        <th>Médico</th>
-        <th>Estado</th>
-        <th>Valor</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let turno of turnos">
-        <td>{{ turno.fecha_hora | date: 'dd/MM/yyyy HH:mm' }}</td>
-        <td>{{ turno.paciente_nombre }}</td>
-        <td>{{ turno.medico_nombre }}</td>
-        <td>{{ turno.estado }}</td>
-        <td>{{ turno.valor_consulta }}</td>
-        <td>
-          <button *ngIf="puedeCancel(turno)" (click)="cancelar(turno.id)">
-            Cancelar
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        <button
+          type="button"
+          class="btn btn--primary"
+          [disabled]="!horaElegida || !idPaciente || confirmando"
+          (click)="confirmar()"
+        >
+          {{ confirmando ? 'Reservando...' : 'Confirmar reserva' }}
+        </button>
+      </section>
+    </div>
+  }
 
-  <p *ngIf="!cargando && turnos.length === 0">No hay turnos cargados.</p>
-</div>
+  <!-- ===== Todos los turnos ===== -->
+  @if (seccion === 'turnos') {
+    <div class="controls">
+      <div class="control">
+        <label for="filtroMedico">Filtrar por médico</label>
+        <select
+          id="filtroMedico"
+          [ngModel]="filtroMedico"
+          (ngModelChange)="cambiarFiltroMedico($event)"
+        >
+          <option value="">Todos los médicos</option>
+          @for (m of medicos; track m.id) {
+            <option [value]="m.nombre">{{ m.nombre }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="control">
+        <label for="filtroFecha">Filtrar por fecha</label>
+        <input
+          id="filtroFecha"
+          type="date"
+          [ngModel]="filtroFecha"
+          (ngModelChange)="cambiarFiltroFecha($event)"
+        />
+      </div>
+
+      <div class="control control--btn">
+        <button type="button" class="btn btn--outline" (click)="limpiarFiltros()">
+          Limpiar filtros
+        </button>
+      </div>
+    </div>
+
+    @if (cargando) {
+      <p class="hint">Cargando...</p>
+    } @else if (turnosFiltrados.length === 0) {
+      <p class="empty-note">No hay turnos para mostrar.</p>
+    } @else {
+      <div class="table-wrap">
+        <table class="list">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Horario</th>
+              <th>Paciente</th>
+              <th>Médico</th>
+              <th>Estado</th>
+              <th>Valor</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (t of turnosFiltrados; track t.id) {
+              <tr>
+                <td>{{ t.fecha_hora | date: 'dd/MM/yyyy' }}</td>
+                <td class="num">{{ t.fecha_hora | date: 'HH:mm' }}</td>
+                <td>{{ t.paciente_nombre }}</td>
+                <td>{{ t.medico_nombre }}</td>
+                <td>
+                  <span [class]="'badge ' + t.estado.toLowerCase()">{{ etiqueta(t.estado) }}</span>
+                </td>
+                <td class="num">{{ formatoPrecio(t.valor_consulta) }}</td>
+                <td>
+                  @if (puedeCancelar(t)) {
+                    <button type="button" class="btn btn--danger btn--sm" (click)="cancelar(t.id)">
+                      Cancelar
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="note note--top">
+        Como administrador, podés cancelar un turno hasta el momento en que inicia la consulta.
+      </p>
+    }
+  }
+
+  <!-- ===== Valores de consulta ===== -->
+  @if (seccion === 'valores') {
+    <div class="table-wrap">
+      <table class="list">
+        <thead>
+          <tr>
+            <th>Médico</th>
+            <th>Matrícula</th>
+            <th>Valor actual</th>
+            <th>Nuevo valor</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (m of medicos; track m.id) {
+            <tr>
+              <td>{{ m.nombre }}</td>
+              <td class="num">{{ m.matricula }}</td>
+              <td class="num">{{ formatoPrecio(m.valor_consulta) }}</td>
+              <td>
+                <input
+                  class="price-input"
+                  type="number"
+                  min="0"
+                  step="1"
+                  [attr.aria-label]="'Nuevo valor de la consulta de ' + m.nombre"
+                  [ngModel]="nuevosValores[m.id]"
+                  (ngModelChange)="cambiarValor(m.id, $event)"
+                />
+              </td>
+              <td>
+                <button type="button" class="btn btn--outline btn--sm" (click)="guardarValor(m)">
+                  Guardar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="note note--top">
+      El nuevo valor se aplica a las reservas que se hagan a partir de este momento. Los turnos ya
+      reservados conservan el valor con el que se reservaron.
+    </p>
+  }
+</app-shell>
